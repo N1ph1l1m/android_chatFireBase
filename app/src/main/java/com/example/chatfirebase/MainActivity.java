@@ -14,6 +14,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
     private Button sendMessageButton;
     private EditText messageEditText;
     private String  userName;
+    FirebaseDatabase database;
+    DatabaseReference messageDataBaseReferences;
+    DatabaseReference messageDataBaseReferences2;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -33,6 +40,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         List<AwesomeMessage> awesomeMessages = new ArrayList<>();
+
+        database = FirebaseDatabase.getInstance();
+        messageDataBaseReferences = database.getReference().child("messages");
+        messageDataBaseReferences.setValue("Hello FireBase");
+
+        messageDataBaseReferences2 =  database.getReference().child("Persone");
+        messageDataBaseReferences2.child("First Name").setValue("Mike");
+        messageDataBaseReferences2.child("Bugs").setValue("red");
+        messageDataBaseReferences2.child("Age").setValue(22);
+
 
         userName = "Default User";
         messageListView = findViewById(R.id.listView);
