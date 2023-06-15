@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private String  userName;
     FirebaseDatabase database;
     DatabaseReference messageDataBaseReferences;
-    DatabaseReference messageDataBaseReferences2;
+
 
 
     @SuppressLint("MissingInflatedId")
@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
         messageDataBaseReferences = database.getReference().child("messages");
         messageDataBaseReferences.setValue("Hello FireBase");
 
-        messageDataBaseReferences2 =  database.getReference().child("Persone");
-        messageDataBaseReferences2.child("First Name").setValue("Mike");
-        messageDataBaseReferences2.child("Bugs").setValue("red");
-        messageDataBaseReferences2.child("Age").setValue(22);
-
+//        messageDataBaseReferences2 =  database.getReference().child("Persone");
+//        messageDataBaseReferences2.child("First Name").setValue("Mike");
+//        messageDataBaseReferences2.child("Bugs").setValue("red");
+//        messageDataBaseReferences2.child("Age").setValue(22);
+//
 
         userName = "Default User";
         messageListView = findViewById(R.id.listView);
@@ -86,6 +86,14 @@ public class MainActivity extends AppCompatActivity {
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AwesomeMessage message = new AwesomeMessage();
+                message.setText(messageEditText.getText().toString());
+                message.setName(userName);
+                message.setImagUrl(null);
+
+
+                messageDataBaseReferences.push().child("Message").setValue(message);
+
                 messageEditText.setText("");
             }
         });
