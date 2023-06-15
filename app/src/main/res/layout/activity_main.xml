@@ -36,7 +36,10 @@
             android:id="@+id/messageEditText"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Input text..."
+            android:textSize="14dp"
+            android:autofillHints="" />
 
         <Button
             android:theme="@style/Platform.MaterialComponents.Light"
@@ -44,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#700404"
-            android:text="Send" />
+            android:text="@string/send" />
 
     </LinearLayout>
 
