@@ -112,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
                 AwesomeMessage message = snapshot.getValue(AwesomeMessage.class);
                 adapter.add(message);
-
-
             }
 
             @Override

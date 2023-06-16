@@ -3,6 +3,7 @@ package com.example.chatfirebase;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,6 +27,9 @@ public class SignInActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private Button sugnUpButton;
 
+    private TextView toggleSignUpTextView;
+    private boolean loginModeActive;
+
 
 
     @Override
@@ -39,6 +42,7 @@ public class SignInActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         sugnUpButton = findViewById(R.id.sugnUpButton);
+        toggleSignUpTextView = findViewById(R.id.toggleSignUpTextView);
 
         sugnUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,8 +61,6 @@ public class SignInActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = auth.getCurrentUser();
-                            Toast.makeText(SignInActivity.this, "Authentication success.",
-                                    Toast.LENGTH_SHORT).show();
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -69,5 +71,21 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        startActivities(new Intent[]{new Intent(SignInActivity.this, MainActivity.class)});
     }
+
+    public void toggleLogInMode(View view) {
+        if(loginModeActive){
+            loginModeActive = false;
+            sugnUpButton.setText("Log in");
+            toggleSignUpTextView.setText("Tap to Sign Up");
+        }else{
+            loginModeActive = true;
+            sugnUpButton.setText("Sign Up");
+            toggleSignUpTextView.setText("Tap To Log In");
+        }
+    }
+
+
 }

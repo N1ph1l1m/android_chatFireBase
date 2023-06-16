@@ -66,6 +66,7 @@
         android:text="Tap To Log In"
         android:textColor="@color/black"
         android:textSize="18dp"
+        android:onClick="toggleLogInMode"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
 
