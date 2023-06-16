@@ -2,4 +2,6 @@
     <string name="app_name">ChatFireBase</string>
     <string name="send">Send</string>
     <string name="text">Text</string>
+    <string name="tap_to_log_in">Tap To Log In</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
