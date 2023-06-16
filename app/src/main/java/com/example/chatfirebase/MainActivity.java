@@ -5,10 +5,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         messageDataBaseReferences = database.getReference().child("messages");
-
-
         processBar = findViewById(R.id.progressBar);
         sendMessageButton = findViewById(R.id.buttonId);
         sendImageButton = findViewById(R.id.sendPhoto);
@@ -136,4 +138,24 @@ public class MainActivity extends AppCompatActivity {
         };
         messageDataBaseReferences.addChildEventListener(messageChildEventListener);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_mains,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        int id = item.getItemId();
+        if(id == R.id.sing__out){
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(MainActivity.this, SignInActivity.class));
+            return true;
+        }
+            return super.onOptionsItemSelected(item);
+    }
+
 }
