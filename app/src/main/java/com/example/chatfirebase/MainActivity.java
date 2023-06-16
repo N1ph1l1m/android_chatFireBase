@@ -45,24 +45,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        List<AwesomeMessage> awesomeMessages = new ArrayList<>();
+
 
         database = FirebaseDatabase.getInstance();
         messageDataBaseReferences = database.getReference().child("messages");
-        messageDataBaseReferences.setValue("Hello FireBase");
 
-//        messageDataBaseReferences2 =  database.getReference().child("Persone");
-//        messageDataBaseReferences2.child("First Name").setValue("Mike");
-//        messageDataBaseReferences2.child("Bugs").setValue("red");
-//        messageDataBaseReferences2.child("Age").setValue(22);
-//
 
-        userName = "Default User";
-        messageListView = findViewById(R.id.listView);
         processBar = findViewById(R.id.progressBar);
         sendMessageButton = findViewById(R.id.buttonId);
         sendImageButton = findViewById(R.id.sendPhoto);
         messageEditText = findViewById(R.id.messageEditText);
+
+        userName = "Default User";
+
+        messageListView = findViewById(R.id.listView);
+        List<AwesomeMessage> awesomeMessages = new ArrayList<>();
         adapter = new AwesomeMessageAdapter(this , R.layout.message_item,awesomeMessages);
         messageListView.setAdapter(adapter);
 
@@ -100,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
                 messageDataBaseReferences.push().setValue(message);
 
-                messageEditText.setText("");
+               messageEditText.setText("");
             }
         });
         sendImageButton.setOnClickListener(new View.OnClickListener() {
@@ -112,30 +109,30 @@ public class MainActivity extends AppCompatActivity {
 
         messageChildEventListener = new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
                 AwesomeMessage message = snapshot.getValue(AwesomeMessage.class);
-
                 adapter.add(message);
 
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
             }
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
 
             }
 
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onChildRemoved(DataSnapshot snapshot) {
 
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onChildMoved( DataSnapshot snapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
 
             }
         };
