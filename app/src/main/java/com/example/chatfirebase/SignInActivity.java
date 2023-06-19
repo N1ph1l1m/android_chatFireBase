@@ -54,6 +54,9 @@ public class SignInActivity extends AppCompatActivity {
                 loginSignUpUser(emailEditText.getText().toString().trim(), passwordEditText.getText().toString().trim());
             }
         });
+        if(auth.getCurrentUser() != null){
+            startActivity(new Intent(SignInActivity.this,MainActivity.class) );
+        }
     }
     private void loginSignUpUser(String email, String password) {
 

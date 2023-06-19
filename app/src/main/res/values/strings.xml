@@ -4,4 +4,5 @@
     <string name="text">Text</string>
     <string name="tap_to_log_in">Tap To Log In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="user_name">User name</string>
 </resources>

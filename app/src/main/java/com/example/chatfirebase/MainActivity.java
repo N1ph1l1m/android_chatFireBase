@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         messageDataBaseReferences = database.getReference().child("messages");
+
         processBar = findViewById(R.id.progressBar);
         sendMessageButton = findViewById(R.id.buttonId);
         sendImageButton = findViewById(R.id.sendPhoto);
@@ -68,29 +69,59 @@ public class MainActivity extends AppCompatActivity {
 
         processBar.setVisibility(ProgressBar.INVISIBLE);
 
+//        messageEditText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                if(charSequence.toString().trim().length() > 0){
+//                    sendMessageButton.setEnabled(true);
+//                }else{
+//                    sendMessageButton.setEnabled(false);
+//                }
+//            }
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
+
+
         messageEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.toString().trim().length() > 0){
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+
+                if (s.toString().trim().length() > 0) {
                     sendMessageButton.setEnabled(true);
-                }else{
+                } else {
                     sendMessageButton.setEnabled(false);
                 }
+
             }
+
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable s) {
 
             }
         });
-                messageEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(500)});
+        messageEditText.setFilters(new InputFilter[]
+                {new InputFilter.LengthFilter(500)});
+
+
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 AwesomeMessage message = new AwesomeMessage();
                 message.setText(messageEditText.getText().toString());
                 message.setName(userName);
