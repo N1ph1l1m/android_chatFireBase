@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference messageDataBaseReferences;
     ChildEventListener messageChildEventListener;
 
+    DatabaseReference usersDataBaseReferences;
+    ChildEventListener userChildEventListener;
+
 
 
     @Override
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         messageDataBaseReferences = database.getReference().child("messages");
+        usersDataBaseReferences = database.getReference().child("users");
 
         processBar = findViewById(R.id.progressBar);
         sendMessageButton = findViewById(R.id.buttonId);
@@ -123,9 +127,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        userChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                User user = snapshot.getValue(User.class);
+                if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        userName = user.getName();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+         };
+
+            usersDataBaseReferences.addChildEventListener(userChildEventListener);
+
         messageChildEventListener = new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 AwesomeMessage message = snapshot.getValue(AwesomeMessage.class);
                 adapter.add(message);
             }
