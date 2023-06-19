@@ -69,27 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
         processBar.setVisibility(ProgressBar.INVISIBLE);
 
-//        messageEditText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                if(charSequence.toString().trim().length() > 0){
-//                    sendMessageButton.setEnabled(true);
-//                }else{
-//                    sendMessageButton.setEnabled(false);
-//                }
-//            }
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//            }
-//        });
-
-
         messageEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start,
