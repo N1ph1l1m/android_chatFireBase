@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference usersDataBaseReferences;
     ChildEventListener userChildEventListener;
 
-
+    private static final int RC_IMAGE_PICKER = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +123,10 @@ public class MainActivity extends AppCompatActivity {
         sendImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("img/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+                startActivityForResult(Intent.createChooser(intent,"Choose an image"),RC_IMAGE_PICKER);
             }
         });
 
