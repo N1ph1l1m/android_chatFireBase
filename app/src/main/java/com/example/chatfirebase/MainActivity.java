@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -26,6 +27,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference usersDataBaseReferences;
     ChildEventListener userChildEventListener;
 
+    FirebaseStorage storage;
+    StorageReference chatImagesStorageReference;
+
     private static final int RC_IMAGE_PICKER = 123;
 
     @Override
@@ -55,8 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         database = FirebaseDatabase.getInstance();
+        storage = FirebaseStorage.getInstance();
         messageDataBaseReferences = database.getReference().child("messages");
         usersDataBaseReferences = database.getReference().child("users");
+        chatImagesStorageReference = storage.getReference().child("chatImages");
+
+
 
         processBar = findViewById(R.id.progressBar);
         sendMessageButton = findViewById(R.id.buttonId);
@@ -81,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
-
             }
 
             @Override
@@ -124,13 +133,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("img/jpeg");
+                intent.setType("img/*");
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
                 startActivityForResult(Intent.createChooser(intent,"Choose an image"),RC_IMAGE_PICKER);
             }
         });
-
-
         userChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -192,6 +199,8 @@ public class MainActivity extends AppCompatActivity {
         };
         messageDataBaseReferences.addChildEventListener(messageChildEventListener);
     }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -212,4 +221,12 @@ public class MainActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RC_IMAGE_PICKER && resultCode == RESULT_OK){
+            Uri selectedImageUri = data.getData();
+            StorageReference imageReference = chatImagesStorageReference.child(selectedImageUri.getLastPathSegment());
+        }
+    }
 }
