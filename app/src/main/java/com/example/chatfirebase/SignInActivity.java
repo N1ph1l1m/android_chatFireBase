@@ -29,8 +29,8 @@ public class SignInActivity extends AppCompatActivity {
 
     private EditText confirmPasswordEditText;
     private Button sugnUpButton;
-    FirebaseDatabase database;
-    DatabaseReference usersDataBase;
+    private FirebaseDatabase database;
+    private DatabaseReference usersDataBase;
 
     private TextView toggleSignUpTextView;
     private boolean loginModeActive;

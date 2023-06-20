@@ -36,7 +36,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class СhatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity {
 
     private ListView messageListView;
     private AwesomeMessageAdapter adapter;
@@ -45,15 +45,18 @@ public class СhatActivity extends AppCompatActivity {
     private Button sendMessageButton;
     private EditText messageEditText;
     private String  userName;
-    FirebaseDatabase database;
-    DatabaseReference messageDataBaseReferences;
-    ChildEventListener messageChildEventListener;
 
-    DatabaseReference usersDataBaseReferences;
-    ChildEventListener userChildEventListener;
+    private String recipientUserId;
+    private FirebaseDatabase database;
+    private DatabaseReference messageDataBaseReferences;
+    private ChildEventListener messageChildEventListener;
 
-    FirebaseStorage storage;
-    StorageReference chatImagesStorageReference;
+    private DatabaseReference usersDataBaseReferences;
+    private ChildEventListener userChildEventListener;
+
+    private FirebaseStorage storage;
+    private StorageReference chatImagesStorageReference;
+    private FirebaseAuth auth;
 
     private static final int RC_IMAGE_PICKER = 123;
 
@@ -61,6 +64,17 @@ public class СhatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        auth = FirebaseAuth.getInstance();
+
+        Intent intent = getIntent();
+        if(intent != null){
+            userName = intent.getStringExtra("userName");
+            recipientUserId = intent.getStringExtra("recipientUserId");
+        }else{
+            userName = "Default User";
+        }
+
 
 
         database = FirebaseDatabase.getInstance();
@@ -75,12 +89,7 @@ public class СhatActivity extends AppCompatActivity {
         sendMessageButton = findViewById(R.id.buttonId);
         sendImageButton = findViewById(R.id.sendPhoto);
         messageEditText = findViewById(R.id.messageEditText);
-        Intent intent  = getIntent();
-        if(intent != null){
-            userName = intent.getStringExtra("userName");
-        }else{
-            userName = "Default User";
-        }
+
 
         messageListView = findViewById(R.id.listView);
         List<AwesomeMessage> awesomeMessages = new ArrayList<>();
@@ -124,6 +133,8 @@ public class СhatActivity extends AppCompatActivity {
                 AwesomeMessage message = new AwesomeMessage();
                 message.setText(messageEditText.getText().toString());
                 message.setName(userName);
+                message.setSender(auth.getCurrentUser().getUid());
+                message.setRecipient(recipientUserId);
                 message.setImagUrl(null);
 
 
@@ -177,7 +188,12 @@ public class СhatActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 AwesomeMessage message = snapshot.getValue(AwesomeMessage.class);
-                adapter.add(message);
+
+                if(message.getSender().equals(auth.getCurrentUser().getUid())
+                        && message.getRecipient().equals(recipientUserId)){
+                    adapter.add(message);
+                }
+
             }
 
             @Override
@@ -218,7 +234,7 @@ public class СhatActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.sing__out){
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(СhatActivity.this, SignInActivity.class));
+            startActivity(new Intent(ChatActivity.this, SignInActivity.class));
             return true;
         }
             return super.onOptionsItemSelected(item);

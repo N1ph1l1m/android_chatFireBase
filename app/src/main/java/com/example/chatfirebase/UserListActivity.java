@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 public class UserListActivity extends AppCompatActivity {
 
+    private String userName;
     private FirebaseAuth auth;
     private DatabaseReference userDatabaseReference;
     private ChildEventListener userChildEventListener;
@@ -38,8 +39,12 @@ public class UserListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_list);
 
         auth = FirebaseAuth.getInstance();
-
+        Intent intent = getIntent();
         userArrayList = new ArrayList<>();
+        if(intent != null){
+            userName = intent.getStringExtra(userName);
+        }
+
 
         attachUserDatabaseReferenceListener();
 
@@ -95,7 +100,24 @@ public class UserListActivity extends AppCompatActivity {
 
         userRecyclerView.setLayoutManager(userLayoutManager);
         userRecyclerView.setAdapter(userAdapter);
+
+        userAdapter.setOnUserClickListener(new UserAdapter.OnUserClickListener() {
+            @Override
+            public void onUserClick(int position) {
+                goToChat(position);
+            }
+        });
     }
+
+    private void goToChat(int position) {
+        Intent intent = new Intent (UserListActivity.this,ChatActivity.class);
+        intent.putExtra("recipientUserId", userArrayList.get(position).getId());
+        intent.putExtra("userName", userName);
+        startActivity(intent);
+
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
