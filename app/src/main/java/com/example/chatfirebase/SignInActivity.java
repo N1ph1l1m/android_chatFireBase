@@ -18,7 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.ktx.Firebase;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -64,7 +63,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
         if(auth.getCurrentUser() != null){
-            startActivity(new Intent(SignInActivity.this,MainActivity.class) );
+            startActivity(new Intent(SignInActivity.this, СhatActivity.class) );
         }
     }
     private void loginSignUpUser(String email, String password) {
@@ -80,7 +79,7 @@ public class SignInActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = auth.getCurrentUser();
-                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                            Intent intent = new Intent(SignInActivity.this, СhatActivity.class);
                             intent.putExtra("userName",nameEditText.getText().toString().trim());
                             startActivity(intent);
                         } else {
@@ -112,7 +111,7 @@ public class SignInActivity extends AppCompatActivity {
                                         Log.d(TAG, "createUserWithEmail:success");
                                         FirebaseUser user = auth.getCurrentUser();
                                         createUser(user);
-                                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                        Intent intent = new Intent(SignInActivity.this, СhatActivity.class);
                                         intent.putExtra("userName",nameEditText.getText().toString().trim());
                                         startActivity(intent);
                                         //updateUI(user);

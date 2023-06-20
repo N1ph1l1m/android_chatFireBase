@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,7 +36,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class СhatActivity extends AppCompatActivity {
 
     private ListView messageListView;
     private AwesomeMessageAdapter adapter;
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_chat);
 
 
         database = FirebaseDatabase.getInstance();
@@ -219,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.sing__out){
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(MainActivity.this, SignInActivity.class));
+            startActivity(new Intent(СhatActivity.this, SignInActivity.class));
             return true;
         }
             return super.onOptionsItemSelected(item);
