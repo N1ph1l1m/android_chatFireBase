@@ -16,7 +16,7 @@
             android:name=".UserListActivity"
             android:exported="false" />
         <activity
-            android:name=".СhatActivity"
+            android:name=".ChatActivity"
             android:exported="false" />
         <activity
             android:name=".SignInActivity"

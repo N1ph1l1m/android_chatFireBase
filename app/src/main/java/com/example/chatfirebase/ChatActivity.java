@@ -143,19 +143,31 @@ public class ChatActivity extends AppCompatActivity {
                messageEditText.setText("");
             }
         });
+
+
+//        sendImageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                intent.setType("image/*");
+//                intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+//                startActivityForResult(Intent.createChooser(intent,"Choose an image"),RC_IMAGE_PICKER);
+//            }
+//        });
         sendImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-                startActivityForResult(Intent.createChooser(intent,"Choose an image"),RC_IMAGE_PICKER);
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Choose an image"),
+                        RC_IMAGE_PICKER);
             }
         });
         userChildEventListener = new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                User user = snapshot.getValue(User.class);
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                User user = dataSnapshot.getValue(User.class);
                 if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                         userName = user.getName();
                 }
@@ -183,14 +195,15 @@ public class ChatActivity extends AppCompatActivity {
          };
 
             usersDataBaseReferences.addChildEventListener(userChildEventListener);
-
         messageChildEventListener = new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                AwesomeMessage message = snapshot.getValue(AwesomeMessage.class);
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                AwesomeMessage message = dataSnapshot.getValue(AwesomeMessage.class);
 
                 if(message.getSender().equals(auth.getCurrentUser().getUid())
-                        && message.getRecipient().equals(recipientUserId)){
+                        && message.getRecipient().equals(recipientUserId) ||
+                        message.getRecipient().equals(auth.getCurrentUser().getUid())
+                        && message.getSender() .equals(recipientUserId)){
                     adapter.add(message);
                 }
 
@@ -269,6 +282,8 @@ public class ChatActivity extends AppCompatActivity {
                         AwesomeMessage message = new AwesomeMessage();
                         message.setImagUrl(downloadUri.toString());
                         message.setName(userName);
+                        message.setSender(auth.getCurrentUser().getUid());
+                        message.setRecipient(recipientUserId);
                         messageDataBaseReferences.push().setValue(message);
                     }
                 }
