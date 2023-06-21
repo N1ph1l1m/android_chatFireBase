@@ -37,33 +37,37 @@ public class AwesomeMessageAdapter extends ArrayAdapter <AwesomeMessage> {
         AwesomeMessage awesomeMessage = getItem(position);
         int layoutResource = 0;
         int viewType = getItemViewType(position);
+        if(viewType == 0 ){
+            layoutResource = R.layout.my_message_item;
+        }else{
+            layoutResource = R.layout.your_message_item;
+        }
 
+
+        if(convertView!=null){
+            viewHolder = (ViewHolder) convertView.getTag();
+        }else {
+            convertView = layoutInflater.inflate(layoutResource,parent,false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        }
+        boolean isText = awesomeMessage.getImagUrl() ==null;
+        if (isText) {
+            viewHolder.messageTextView.setVisibility(View.VISIBLE);
+            viewHolder.photoImageView.setVisibility(View.GONE);
+            viewHolder.messageTextView.setText(awesomeMessage.getText());
+        }else {
+            viewHolder.messageTextView.setVisibility(View.GONE);
+            viewHolder.photoImageView.setVisibility(View.VISIBLE);
+            viewHolder.messageTextView.setText(awesomeMessage.getText());
+            Glide.with(viewHolder.photoImageView.getContext()).load(awesomeMessage.getImagUrl()).into(viewHolder.photoImageView);
+        }
 
         if(convertView ==null){
             convertView = ((Activity)getContext()).getLayoutInflater().inflate(R.layout.message_item, parent,false);
 
-
-
         }
-        ImageView photoImageView = convertView.findViewById(R.id.photoImageView);
-        TextView textView = convertView.findViewById(R.id.textView);
-        TextView textViewName = convertView.findViewById(R.id.Name);
 
-        AwesomeMessage message = getItem(position);
-
-        boolean isText = message.getImagUrl() == null;
-
-        if(isText){
-
-            textView.setVisibility(View.VISIBLE);
-            photoImageView.setVisibility(View.GONE);
-            textViewName.setText(message.getText());
-        }else{
-            textViewName.setVisibility(View.GONE);
-            photoImageView.setVisibility(View.VISIBLE);
-            Glide.with(photoImageView.getContext()).load(message.getImagUrl()).into(photoImageView);
-        }
-        textViewName.setText(message.getName());
 
         return convertView;
     }
