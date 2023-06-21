@@ -5,12 +5,13 @@ public class AwesomeMessage {
     public AwesomeMessage() {
     }
 
-    public AwesomeMessage(String text, String name, String imagUrl, String sender, String recipient) {
+    public AwesomeMessage(String text, String name, String imagUrl, String sender, String recipient, boolean isMine) {
         this.text = text;
         this.name = name;
         this.imagUrl = imagUrl;
         this.sender = sender;
         this.recipient = recipient;
+        this.isMine = isMine;
     }
 
     public String getSender() {
@@ -23,6 +24,14 @@ public class AwesomeMessage {
 
     public String getRecipient() {
         return recipient;
+    }
+
+    public boolean isMine() {
+        return isMine;
+    }
+
+    public void setMine(boolean mine) {
+        isMine = mine;
     }
 
     public void setRecipient(String recipient) {
@@ -60,5 +69,7 @@ public class AwesomeMessage {
     private String imagUrl;
     private String sender;
     private String recipient;
+
+    private boolean isMine;
 
 }
