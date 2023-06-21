@@ -57,7 +57,7 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference chatImagesStorageReference;
     private FirebaseAuth auth;
-
+    private String  recipientUserName;
     private static final int RC_IMAGE_PICKER = 123;
 
     @Override
@@ -71,11 +71,10 @@ public class ChatActivity extends AppCompatActivity {
         if(intent != null){
             userName = intent.getStringExtra("userName");
             recipientUserId = intent.getStringExtra("recipientUserId");
-        }else{
-            userName = "Default User";
+            recipientUserName = intent.getStringExtra("recipientUserName");
         }
 
-
+        setTitle(recipientUserName);
 
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -143,17 +142,6 @@ public class ChatActivity extends AppCompatActivity {
                messageEditText.setText("");
             }
         });
-
-
-//        sendImageButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//                intent.setType("image/*");
-//                intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-//                startActivityForResult(Intent.createChooser(intent,"Choose an image"),RC_IMAGE_PICKER);
-//            }
-//        });
         sendImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
